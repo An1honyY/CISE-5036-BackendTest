@@ -1,32 +1,23 @@
-// app.js
 const serverless = require("serverless-http");
-const express = require('express');
-const connectDB = require('./config/db');
-const cors = require('cors');
-
-// routes
-const articles = require('./routes/api/articles');
-
+const express = require("express");
 const app = express();
 
-// Connect Database
-connectDB();
+app.get("/", (req, res, next) => {
+  return res.status(200).json({
+    message: "Hello from root!",
+  });
+});
 
-// cors
-app.use(cors({ origin: true, credentials: true }));
+app.get("/hello", (req, res, next) => {
+  return res.status(200).json({
+    message: "Hello from path!",
+  });
+});
 
-// Init Middleware
-app.use(express.json({ extended: false }));
+app.use((req, res, next) => {
+  return res.status(404).json({
+    error: "Not Found",
+  });
+});
 
-app.get('/', (req, res) => res.send('Hello world!'));
-
-// use Routes
-app.use('/api/suggest', articles);
-
-/*
-const port = process.env.PORT || 8082;
-
-app.listen(port, () => console.log(`Server running on port ${port}`));
-*/
-// Export the Express API for Vercel serverless functions
-module.exports = serverless(app);
+module.exports.handler = serverless(app);
