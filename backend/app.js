@@ -21,7 +21,7 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('Hello world!'));
 
 // use Routes
-app.use('/api/articles', articles);
+app.use('/api/suggest', articles);
 
 /*
 const port = process.env.PORT || 8082;
