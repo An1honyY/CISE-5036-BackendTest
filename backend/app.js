@@ -12,6 +12,10 @@ mongoose.connect('mongodb+srv://user1:HFTGHEsrTYC8OJWt@cluster0.hvwapzz.mongodb.
   useUnifiedTopology: true,
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello world!');
+  });
+  
 // Define your API routes and handlers
 app.get('/api/articles', (req, res) => {
   // Handle your MongoDB queries and responses here
