@@ -1,5 +1,5 @@
 // app.js
-
+const serverless = require("serverless-http");
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
@@ -29,4 +29,4 @@ const port = process.env.PORT || 8082;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 */
 // Export the Express API for Vercel serverless functions
-module.exports = app;
+module.exports = serverless(app);
