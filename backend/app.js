@@ -23,9 +23,10 @@ app.get('/', (req, res) => res.send('Hello world!'));
 // use Routes
 app.use('/api/articles', articles);
 
+/*
 const port = process.env.PORT || 8082;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
-
+*/
 // Export the Express API for Vercel serverless functions
 module.exports = app;
