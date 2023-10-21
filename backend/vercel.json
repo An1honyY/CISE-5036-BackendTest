@@ -12,10 +12,6 @@
     {
       "src": "api/moderate.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "api/analysis.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -30,10 +26,6 @@
     {
       "src": "/api/moderate",
       "dest": "api/moderate.js"
-    },
-    {
-      "src": "/api/analysis",
-      "dest": "api/analysis.js"
     }
   ]
 }
