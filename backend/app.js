@@ -29,7 +29,5 @@ app.use('/api/articles', articles);
 app.use('/api/suggest', suggest);
 app.use('/api/moderate', moderate);
 
-const port = process.env.PORT || 8082;
-
 // Export the Express app
 module.exports = app;
