@@ -1,26 +1,31 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const connectDB = require('./config/db');
+const cors = require('cors');
+
+// routes
+const articles = require('./routes/api/articles');
 
 const app = express();
 
-// Middleware for JSON parsing
-app.use(express.json());
+// Connect Database
+connectDB();
 
-// MongoDB connection
-mongoose.connect('mongodb+srv://user1:HFTGHEsrTYC8OJWt@cluster0.hvwapzz.mongodb.net/?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// cors
+app.use(cors({ origin: true, credentials: true }));
+
+// Middleware for JSON parsing
+app.use(express.json({ extended: false }));
+
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
   });
   
 // Define your API routes and handlers
-app.get('/api/articles', (req, res) => {
-  // Handle your MongoDB queries and responses here
-  res.json({ message: 'Hello from MongoDB!' });
-});
+app.use('/api/articles', articles);
+
+const port = process.env.PORT || 8082;
 
 // Export the Express app
 module.exports = app;
