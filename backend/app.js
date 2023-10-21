@@ -8,7 +8,13 @@ const suggest = require('./routes/api/suggest')
 const moderate = require('./routes/api/moderate');
 
 const app = express();
+
 // Connect Database
+connectDB();
+
+// cors
+app.use(cors({ origin: true, credentials: true }));
+
 // Middleware for JSON parsing
 app.use(express.json({ extended: false }));
 
