@@ -17,7 +17,7 @@ function AnalysisPage() {
     const fetchArticles = async () => {
         try {
             console.log('Beginning to try');
-          const response = await fetch('http://localhost:8082/api/moderate/approved');
+          const response = await fetch('https://cise-5036-backend-test.vercel.app//api/moderate/approved');
           const data = await response.json();
           setArticles(data);
           setLoading(false);
