@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
-const cors = require('cors');
 /*
 // routes
 const articles = require('./routes/api/articles');
@@ -13,11 +12,8 @@ const app = express();
 // Connect Database
 connectDB();
 
-// cors
-app.use(cors({ origin: true, credentials: true }));
-
 // Middleware for JSON parsing
-app.use(express.json({ extended: false }));
+app.use(express.json());
 
 
 app.get('/', (req, res) => {
