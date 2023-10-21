@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const cors = require('cors');
-
+/*
 // routes
 const articles = require('./routes/api/articles');
 const suggest = require('./routes/api/suggest')
 const moderate = require('./routes/api/moderate');
-
+*/
 const app = express();
 
 // Connect Database
@@ -19,17 +19,23 @@ app.use(cors({ origin: true, credentials: true }));
 // Middleware for JSON parsing
 app.use(express.json({ extended: false }));
 
-/*
+
 app.get('/', (req, res) => {
     res.send('Hello world!');
   });
-  
+
+// Define Routes
+app.get('/api/articles', (req, res) => {
+  // Handle your MongoDB queries and responses here
+  res.json({ message: 'Hello from MongoDB!' });
+});
+  /*
 // Define your API routes and handlers
 app.use('/api/articles', articles);
 app.use('/api/suggest', suggest);
 app.use('/api/moderate', moderate);
 */
-
+/*
 const router = app.Router();
 
 // Load Article model
@@ -86,7 +92,7 @@ router.delete('/:id', (req, res) => {
         .then(article => res.json({ mgs: 'Article entry deleted successfully' }))
         .catch(err => res.status(404).json({ error: 'No such a article' }));
 });
-
+*/
 const port = process.env.PORT || 8082;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
