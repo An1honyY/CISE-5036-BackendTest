@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "app.js",
+      "use": "@now/node"
+    },
+    {
       "src": "api/articles.js",
       "use": "@vercel/node"
     },
@@ -15,6 +19,10 @@
     }
   ],
   "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.js"
+    },
     {
       "src": "/api/articles",
       "dest": "api/articles.js"
