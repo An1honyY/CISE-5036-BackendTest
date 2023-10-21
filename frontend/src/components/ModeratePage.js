@@ -1,76 +1,72 @@
-"use client";
-import React, { useState } from 'react';
+"use client"
+import { useState, useEffect } from 'react';
 import styles from './ModeratePage.module.css';
 
+function ModerationPage() {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-function ModeratePage() {
-    const initialArticles = [
-        { id: 1, title: 'Article 1', content: 'This is the content of Article 1.' },
-        { id: 2, title: 'Article 2', content: 'This is the content of Article 2.' },
-    ];
+  useEffect(() => {
     
-    const [articles, setArticles] = useState(initialArticles);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedArticle, setSelectedArticle] = useState(null);
-
-    const filteredArticles = articles.filter(article => 
-        article.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const approveArticle = (articleId) => {
-        const updatedArticles = articles.filter(article => article.id !== articleId);
-        setArticles(updatedArticles);
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('http://localhost:8082/api/moderate/pending');
+        const data = await response.json();
+        setArticles(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
+        setLoading(false);
+      }
     };
 
-    const rejectArticle = (articleId) => {
-        const updatedArticles = articles.filter(article => article.id !== articleId);
-        setArticles(updatedArticles);
-    };
+    fetchArticles();
+  }, []);
 
-    const viewDetails = (article) => {
-        setSelectedArticle(article);
-    };
+  const handleApprove = async (id) => {
+    try {
+      await fetch(`http://localhost:8082/api/moderate/approve/${id}`, {
+        method: 'PUT'
+      });
+      
+      setArticles(articles.filter(article => article._id !== id));
+    } catch (error) {
+      console.error('Failed to approve article:', error);
+    }
+  };
 
-    const closeModal = () => {
-        setSelectedArticle(null);
-    };
+  const handleReject = async (id) => {
+    try {
+      await fetch(`http://localhost:8082/api/moderate/reject/${id}`, {
+        method: 'PUT'
+      });
+      // Remove rejected article from the list
+      setArticles(articles.filter(article => article._id !== id));
+    } catch (error) {
+      console.error('Failed to reject article:', error);
+    }
+  };
 
-    return (
-        <div className="moderate-page">
-            <h2>Moderate Articles</h2>
-            
-            <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-            />
+  return (
+    <div className={styles.container}>
+      <h2>Moderation Page</h2>
 
-            <ul>
-                {filteredArticles.map(article => (
-                    <li key={article.id}>
-                        <h3>{article.title}</h3>
-                        <p>{article.content}</p>
-                        <button onClick={() => approveArticle(article.id)}>Approve</button>
-                        <button onClick={() => rejectArticle(article.id)}>Reject</button>
-                        <button onClick={() => viewDetails(article)}>View Details</button>
-                    </li>
-                ))}
-            </ul>
-
-            {selectedArticle && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h3>{selectedArticle.title}</h3>
-                        <p>{selectedArticle.content}</p>
-                        <button onClick={closeModal}>Close</button>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+      {loading ? (
+        <p>Loading articles...</p>
+      ) : (
+        articles.map(article => (
+          <div key={article._id} className={styles.article}>
+            <h3>{article.title}</h3>
+            <p><strong>Author:</strong> {article.author}</p>
+            <p><strong>Journal:</strong> {article.journal}</p>
+            <p><strong>Year:</strong> {article.year}</p>
+            <button onClick={() => handleApprove(article._id)}>Approve</button>
+            <button onClick={() => handleReject(article._id)}>Reject</button>
+          </div>
+        ))
+      )}
+    </div>
+  );
 }
 
-export default ModeratePage;
-
-
+export default ModerationPage;

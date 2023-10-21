@@ -5,6 +5,8 @@ const cors = require('cors');
 
 // routes
 const articles = require('./routes/api/articles');
+const suggest = require('./routes/api/suggest')
+const moderate = require('./routes/api/moderate');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.get('/', (req, res) => {
   
 // Define your API routes and handlers
 app.use('/api/articles', articles);
+app.use('/api/suggest', suggest);
+app.use('/api/moderate', moderate);
 
 const port = process.env.PORT || 8082;
 

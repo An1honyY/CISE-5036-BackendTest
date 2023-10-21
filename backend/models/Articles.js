@@ -5,19 +5,15 @@ const mongoose = require('mongoose');
 const ArticleSchema = new mongoose.Schema({
     author: {
         type: String,
-        required: true
     },
     title: {
         type: String,
-        required: true
     },
     journal: {
         type: String,
-        required: true
     },
     year: {
-        type: Date,
-        required: true
+        type: String,
     },
     volume: {
         type: String
@@ -28,23 +24,28 @@ const ArticleSchema = new mongoose.Schema({
     pages: {
         type: String
     },
-    month: {
-        type: String
-    },
-    note: {
-        type: String
-    },
     doi: {
         type: String
     },
-    issn: {
+    practice: {
         type: String
     },
-    zblnumber: {
+    claim: {
         type: String
     },
-    eprint: {
+    evidence_result: {
         type: String
+    },
+    research_type: {
+        type: String
+    },
+    participant_type: {
+        type: String
+    },
+    status: {
+        type: String,
+        default: 'waiting',
+        enum: ['waiting', 'approved', 'rejected']
     }
 });
 

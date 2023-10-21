@@ -1,73 +1,61 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import styles from './articleForm.module.css';
 
 export default function ArticleForm() {
-  const [author, setAuthor] = useState('');
-  const [title, setTitle] = useState('');
-  const [journal, setJournal] = useState('');
-  const [year, setYear] = useState('');
-  const [volume, setVolume] = useState('');
-  const [number, setNumber] = useState('');
-  const [pages, setPages] = useState('');
+  const [message, setMessage] = useState(null);
+  const [article, setArticle] = useState({
+    author: '',
+    title: '',
+    journal: '',
+    year: '',
+    volume: '',
+    number: '',
+    pages: '',
+  })
 
-  const handleSubmit = async(event) => {
-    event.preventDefault();
-   
-   const articleData = {
-      author,
-      title,
-      journal,
-      year,
-      volume,
-      number,
-      pages,
-    };
-  
-    console.log({
-      author,
-      title,
-      journal,
-      year,
-      volume,
-      number,
-      pages,
-    });
-    console.log(articleData);
-
-    try {
-      const response = await fetch('https://cise-5036.vercel.app/api/suggest', { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(articleData),
+   const onChange = (e) => {
+    setArticle({ ...article, [e.target.name]: e.target.value });
+  }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:8082/api/articles', article)
+      .then((res) => {
+        setArticle({
+          author: '',
+          title: '',
+          journal: '',
+          year: '',
+          volume: '',
+          number: '',
+          pages: '',
+          status: 'waiting',
+        });
+      })
+      .catch((err) => {
+        setMessage('An unexpected error occurred.');
+        console.log('Error in articleForm.js:', err);
+        console.log('article:', article);
       });
-  
-      const result = await response.json();
-  
-      if (response.status === 200) {
-        console.log(result.success); 
-      } else {
-        console.error(result.error);
-      }
-    } catch (error) {
-      console.error('Error while submitting the article:', error);
-    }
-  };
+  }
+
 
   return (
     <div className={styles.outerContainer}>
       <div className={styles.articleFormContainer}>
         <h2>Research Article Suggestion Form</h2>
-        <form onSubmit={handleSubmit}>
+        {message && <div className={styles.message}>{message}</div>}
+        <form onSubmit={onSubmit}>
           <div>
             <label htmlFor="author">Author(s):</label>
             <input
               type="text"
               id="author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+              name="author"
+              value={article.author}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -75,8 +63,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              name="title"  // name required for useState to work properly
+              value={article.title}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -84,8 +73,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="journal"
-              value={journal}
-              onChange={(e) => setJournal(e.target.value)}
+              name="journal"
+              value={article.journal}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -93,8 +83,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
+              name="year"
+              value={article.year}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -102,8 +93,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="volume"
-              value={volume}
-              onChange={(e) => setVolume(e.target.value)}
+              name="volume"
+              value={article.volume}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -111,8 +103,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="number"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              name="number"
+              value={article.number}
+              onChange={onChange}
             />
           </div>
           <div>
@@ -120,8 +113,9 @@ export default function ArticleForm() {
             <input
               type="text"
               id="pages"
-              value={pages}
-              onChange={(e) => setPages(e.target.value)}
+              name="pages"
+              value={article.pages}
+              onChange={onChange}
             />
           </div>
           <button type="submit">Submit</button>

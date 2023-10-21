@@ -4,12 +4,8 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const connectionString = '"mongodb+srv://user1:HFTGHEsrTYC8OJWt@cluster0.hvwapzz.mongodb.net/?retryWrites=true&w=majority"'; // from MongoDB Atlas
 
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+;
 
 const Article = mongoose.model('Article', {
   author: String,
@@ -21,7 +17,7 @@ const Article = mongoose.model('Article', {
   pages: String,
 });
 
-router.post('/suggest', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const newArticle = new Article(req.body);
     await newArticle.save();
