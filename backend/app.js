@@ -12,10 +12,6 @@ app.get('/', (req, res) => {
     res.send('Hello world!');
   });
   
-// Define your API routes and handlers
-app.get('/api/articles', (req, res) => {
-  // Handle your MongoDB queries and responses here
-  res.json({ message: 'Hello from MongoDB!' });
-});
+
 // Export the Express app
 module.exports = app;
